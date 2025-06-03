@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Unban</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 90%;
+            max-width: auto;
+            margin: 0 auto;
+            padding: 15px;
+            background-color: #fefffd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: red; /* Red color */
+            font-weight: bold; /* Bold font */
+            text-align: center;
+            font-size: 33px;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], select, input[type="file"] {
+            width: calc(100% - 22px); /* Adjusted width for better alignment */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        input[type="submit"] {
+            width: 100%; /* Match the width of other input boxes */
+            background-color: green; /* Changed to green */
+            color: white; /* Changed to white for better visibility */
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.3s; /* Animation effect */
+            margin-bottom: 10px; /* Added margin for spacing */
+        }
+        input[type="submit"]:hover {
+            background-color: darkgreen; /* Darker green on hover */
+            transform: scale(1.05); /* Scale effect */
+        }
+        .emulator-note, .screenshot-note {
+            color: red; /* Red color */
+            opacity: 0.5; /* 50% opacity */
+            font-size: 12px; /* Font size */
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Free Fire ID Unban</h1>
+        <form id="unbanForm">
+            <label for="uid">Account UID</label>
+            <input type="text" id="uid" name="uid" placeholder="Enter your Free Fire UID" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+            <div id="uidError" class="error" style="display: none;"></div>
+
+            <label for="nickname">Account Nickname</label>
+            <input type="text" id="nickname" name="nickname" placeholder="Enter your Free Fire Nickname" required>
+
+            <label for="device">Your Device</label>
+            <select id="device" name="device" required>
+                <option value="" disabled selected>Choose your Device</option>
+                <option value="android">Android</option>
+                <option value="ios">iOS</option>
+                <option value="pc">PC <span class="emulator-note">(Emulator)</span></option>
+            </select>
+
+            <label for="server">Server/Region</label>
+            <select id="server" name="server" required>
+                <option value="" disabled selected>Select your Server</option>
+                <option value="india">India</option>
+                <option value="thailand">Thailand</option>
+                <option value="brazil">Brazil</option>
+                <option value="mena">Middle East (MENA)</option>
+                <option value="mexico">Mexico (LATAM)</option>
+                <option value="taiwan">Taiwan</option>
+                <option value="russia">Russia</option>
+                <option value="europe">Europe</option>
+                <option value="indonesia">Indonesia</option>
+                <option value="malaysia">Malaysia</option>
+                <option value="vietnam">Vietnam</option>
+                <option value="pakistan">Pakistan</option>
+                <option value="bangladesh">Bangladesh</option>
+            </select>
+
+            <label for="reason">Reason for Ban</label>
+            <select id="reason" name="reason" required>
+                <option value="" disabled selected>Select Reason for Ban</option>
+                <option value="hacking">I used hacking</option>
+                <option value="verbal_abuse">I did verbal abuse</option>
+                <option value="friend_cheat">My friend took my Free Fire ID and used it to cheat, which got it banned</option>
+                <option value="unknown_hack">An unknown person hacked my Free Fire ID and used it to cheat, which got it banned</option>
+                <option value="unknown_reason">I don't know anything about how my ID got banned</option>
+            </select>
+
+            <label for="level">ID Level</label>
+            <input type="text" id="level" name="level" placeholder="Your Free Fire ID Level" required maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
+            <div id="levelError" class="error" style="display: none;">Your ID level does not match.</div>
+
+            <label for="screenshot">Upload Screenshot <span class="screenshot-note">(Screenshot of Ban Message)</span></label>
+            <input type="file" id="screenshot" name="screenshot">
+
+            <input type="submit" value="Proceed">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("unbanForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting
+            
+            const uid = document.getElementById("uid").value;
+            const level = document.getElementById("level").value;
+
+            // Check if UID length is not between 7 and 14
+            if (uid.length < 7 || uid.length > 14) {
+                alert('Please enter a valid UID.');
+            } else if (level < 2 || level > 100) {
+                // Show error message for level
+                alert('Your ID level does not match.');
+            } else {
+                // Redirect to the provided URL
+                window.location.href = "https://payment.maxado.in/index.php?token=Mjk5fHxhSFIwY0hNNkx5OTFibUpoYm5CaGJtVnNMbk5pY3k5bllYSmxibUZmWm5KbFpXWnBjbVV2WVdOamIzVnVkSE5mZFc1aVlXNHZlaTlqYjI1bWFYSnRZWFJwYjI0PXx8aHR0cHM6Ly91bmJhbnBhbmVsLnNicy9nYXJlbmFfZnJlZWZpcmUvYWNjb3VudHNfdW5iYW4vei9nYXJlbmFfbG9nby53ZWJw";
+            }
+        });
+    </script>
+</body>
+</html>
